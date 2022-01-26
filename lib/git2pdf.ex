@@ -20,6 +20,11 @@ defmodule Git2pdf do
     :world
   end
 
-  def gitignore_list(path) do
+  def gitignore_file_list(path) do
+    File.stream!(path) |>
+      Stream.map(&String.trim(&1)) |>
+      Stream.filter(&String.length(&1) > 0) |>
+      Stream.filter(fn s -> !String.starts_with?(s, "#") end) |>
+      Enum.to_list
   end
 end
