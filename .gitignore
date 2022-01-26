@@ -24,3 +24,6 @@ git2pdf-*.tar
 
 # Temporary files, for example, from tests.
 /tmp/
+
+.git
+.elixir_ls
