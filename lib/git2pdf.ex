@@ -17,12 +17,24 @@ defmodule Git2pdf do
   @doc """
   Converts a .gitignore file into a list of relative string filenames.
   """
-  def gitignore_file_list(path) do
-    File.stream!(path) |>
+  def gitignore_file_list(gitignore_path) do
+    File.stream!(gitignore_path) |>
       Stream.map(&String.trim(&1)) |>
       Stream.filter(&String.length(&1) > 0) |>
       Stream.filter(&!String.starts_with?(&1, "#")) |>
       Enum.to_list
+  end
+
+  def filter_gitignore(file_list, gitignore_list) do
+    file_list |>
+      Enum.filter(
+        fn file ->
+          not Enum.any?(
+            gitignore_list,
+            fn g -> String.contains?(file, g) end
+          )
+        end
+      )
   end
 
   @doc """
